@@ -7,9 +7,30 @@ require_once('vendor/autoload.php');
 $f3 = Base::instance();
 
 $f3->set('DEBUG', 3);
-$f3->route('GET /', function() {
+$f3->route('GET /@item', function($f3, $params) {
+    $item = $params['item'];
+    switch ($item)
+    {
+        case 'bagel':
+            $f3->reroute('breakfast/continental');
+        default:
+            echo "<h3>We don't have $item</h3>";
+    }
+});
+
+$f3->route('GET /order', function() {
     $view = new Template();
-    echo $view->render('views/home.html');
+    echo $view->render('views/form1.html');
+});
+
+$f3->route('POST /order-process', function() {
+    $food = $_POST['food'];
+});
+
+$f3->route('GET /@first/@last', function($f3, $params) {
+    $first = $params['first'];
+    $last = $params['last'];
+    echo "<h4>Hello, $first $last!</h4>";
 });
 
 $f3->route('GET /breakfast', function() {
